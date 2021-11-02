@@ -16,38 +16,25 @@ statuses = s.query(Results).all()
 products = s.query(Product).all()
 
 
-# def run(product):
-#     x = OptTest()
-#     x.open(SITE_URL)
-#     try:
-#         x.search(product.article)
-#         link = x.get_search_link()
-#         try:
-#             x.search_warehouse(link)
-#             result = Results(datetime.datetime.now(), product.group, product.name, "не проводилось", product.article,
-#                              'да', product.catalog_number, "не проводилось")
-#             res.add(result)
-#             res.commit()
-#         except NoSuchElementException:
-#             result = Results(datetime.datetime.now(), product.group, product.name, "не проводилось", product.article,
-#                              'нет', product.catalog_number, "не проводилось")
-#             res.add(result)
-#             res.commit()
-#     except IndexError:
-#         result = Results(datetime.datetime.now(), product.group, product.name, "не проводилось", product.article,
-#                          'нет', product.catalog_number, "не проводилось")
-#         res.add(result)
-#         res.commit()
-#     x.close_browser()
-
-
 def new_run(product):
     x = OptTest()
     result_dict = x.init(product.article)
-    print(result_dict)
+
+    prt = 0
+    tr = 0
+
+    for i in result_dict[product.article]:
+        if i == "PRT" or i == "TR":
+            prt += result_dict[product.article]["PRT"]
+            tr += result_dict[product.article]["TR"]
+        elif result_dict[product.article][i]["PRT"] == "null":
+            pass
+        elif result_dict[product.article][i]["PRT"] >= 0:
+            prt += result_dict[product.article][i]["PRT"]
+            tr += result_dict[product.article][i]["TR"]
     result = Results(datetime.datetime.now(), product.group, product.name, "не проводилось", product.article, 'да',
-                     product.catalog_number, "не проводилось", result_dict[product.article]["PRT"],
-                     result_dict[product.article]["TR"])
+                     product.catalog_number, "не проводилось", prt,
+                     tr)
     res.add(result)
     res.commit()
 

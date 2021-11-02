@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from settings import DRIVER_PATH, SITE_URL
 
@@ -69,6 +71,7 @@ class OptTest:
 
         result_dict = {"PRT": 0, "TR": 0}
         self.open(url)
+        time.sleep(3)
         if self.driver.current_url.split('=')[-1] == 'noname':
             result_dict["PRT"] = 'null'
             result_dict["TR"] = 'null'
@@ -105,6 +108,7 @@ class OptTest:
         result_dict = {"PRT": 0, "TR": 0}
         self.open(SITE_URL)
         self.search(article)
+        time.sleep(3)
 
         if self.driver.current_url.split('/')[3] == 'search':
             """Проверка на наличие страницы с результатами поиска"""

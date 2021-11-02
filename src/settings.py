@@ -10,7 +10,7 @@ BRANDS_SHEET_NAME = "Лист1"
 
 DATA_FILE_SHEET_NAME = 'TDSheet'
 
-DRIVER_PATH = "C:\\Users\\YumagulovA\\PycharmProjects\\test_opt\\venv_test_opt\\Scripts\\chromedriver.exe"
+DRIVER_PATH = "C:\\Users\\yumar\\PycharmProjects\\opt_test_module\\src\\driver\\chromedriver_win32\\chromedriver.exe"
 
 
 DATABASE = "sqlite:///products_brands.db"
