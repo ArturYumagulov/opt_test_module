@@ -14,11 +14,14 @@ class OptTest:
 
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
-        self.driver = webdriver.Chrome(DRIVER_PATH)
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument('--no-sandbox')
+        self.driver = webdriver.Chrome(DRIVER_PATH, options=options)
 
     def open(self, link: str):
         """Метод октытия ссылки"""
 
+        print("open...")
         self.driver.get(link)
         self.driver.execute_script("window.stop")
 
@@ -31,6 +34,7 @@ class OptTest:
         """Метод поиска:
         передача значения и клик по кнопке поиска"""
 
+        print(f"search {article}...")
         self.driver.find_element_by_id("title-search-input").send_keys(article)
         self.driver.find_element_by_css_selector("#title-search > form > div > div > "
                                                  "div.cell.large-4.medium-4.small-2 > button").click()
@@ -45,6 +49,8 @@ class OptTest:
         возвращает словарь с ссылками"""
 
         links = self.driver.find_elements_by_xpath('//*[@id="search_results_container_items"]/div/a')
+        
+        print(f"search link...")
         params = dict()
         if len(links) > 0:
             for ii in links:
@@ -68,10 +74,10 @@ class OptTest:
         PRT: Парт-ком
         TR: Транзит
         """
-
+        print(f"search_warehouse {url}...")
         result_dict = {"PRT": 0, "TR": 0}
         self.open(url)
-        time.sleep(3)
+        time.sleep(5)
         if self.driver.current_url.split('=')[-1] == 'noname':
             result_dict["PRT"] = 'null'
             result_dict["TR"] = 'null'
@@ -102,13 +108,14 @@ class OptTest:
 
     def init(self, article: str) -> dict:
         """Инициализатор"""
-
+        
+        print(f"init {article}...")
         res = {}
         new_res = {}
         result_dict = {"PRT": 0, "TR": 0}
         self.open(SITE_URL)
         self.search(article)
-        time.sleep(3)
+        time.sleep(10)
 
         if self.driver.current_url.split('/')[3] == 'search':
             """Проверка на наличие страницы с результатами поиска"""
@@ -136,8 +143,8 @@ class OptTest:
             # return new_res
 
         elif self.driver.current_url.split("/")[3] == "manager-order":
-            result_dict["PRT"] = 'null'
-            result_dict["TR"] = 'null'
+            result_dict["PRT"] = 0
+            result_dict["TR"] = 0
             new_res[article] = result_dict
             self.close_browser()
         return new_res

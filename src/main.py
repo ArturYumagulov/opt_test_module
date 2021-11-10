@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import datetime
 
 from sqlalchemy import create_engine
@@ -19,7 +21,7 @@ products = s.query(Product).all()
 def new_run(product):
     x = OptTest()
     result_dict = x.init(product.article)
-
+    print(result_dict)
     prt = 0
     tr = 0
 
@@ -49,4 +51,5 @@ def version_control(products_list, statuses_list):
 
 
 if __name__ == '__main__':
+    print("run...")
     version_control(products, statuses)
