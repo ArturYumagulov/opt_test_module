@@ -1,4 +1,5 @@
 import time
+from selenium.common.exceptions import TimeoutException
 
 from selenium import webdriver
 from settings import DRIVER_PATH, SITE_URL
@@ -16,14 +17,20 @@ class OptTest:
         options.add_argument('headless')
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument('--no-sandbox')
-        self.driver = webdriver.Chrome(DRIVER_PATH, options=options)
+        # self.driver = webdriver.Chrome(DRIVER_PATH, options=options)
+        self.driver = webdriver.Chrome(DRIVER_PATH)
 
     def open(self, link: str):
         """Метод октытия ссылки"""
 
         print("open...")
-        self.driver.get(link)
-        self.driver.execute_script("window.stop")
+
+        try:
+            self.driver.get(link)
+            self.driver.execute_script("window.stop")
+        except TimeoutException:
+            self.driver.get(link)
+            self.driver.execute_script("window.stop")
 
     def time(self, sec: int):
         """Таймер загрузки страницы"""
@@ -152,4 +159,4 @@ class OptTest:
 
 if __name__ == '__main__':
     x = OptTest()
-    print(x.init("w 914/2"))
+    print(x.init("S05601233"))
